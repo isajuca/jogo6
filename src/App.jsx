@@ -15,6 +15,11 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { BOARD_QUESTIONS, ROWS, COLS, ALL_COORDS } from './data/boardQuestions';
+import {
+  registrarXpNoBanco,
+  buscarRankingDoBanco,
+  limparRankingTurmaNoBanco
+} from './services/xpApi';
 
 export default function App() {
   // Telas: 'welcome' | 'playing'
@@ -42,6 +47,23 @@ export default function App() {
   const [isGameFinished, setIsGameFinished] = useState(false);
   // Modo de visualização limpa após terminar o jogo
   const [previewCleanBoard, setPreviewCleanBoard] = useState(false);
+  const [xpRewardInfo, setXpRewardInfo] = useState(null);
+
+  useEffect(() => {
+    buscarRankingDoBanco('jogo6').then((dbRanking) => {
+      if (dbRanking && dbRanking.length > 0) {
+        const mapped = dbRanking.map((r) => ({
+          id: r.id,
+          name: r.name,
+          turma: r.turma,
+          score: r.score,
+          cleanCount: r.correct ?? 0,
+          pegadasCount: ALL_COORDS.length - (r.correct ?? 0)
+        }));
+        setRanking(mapped);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('tabuleiro_pegadas_ranking_v1', JSON.stringify(ranking));
@@ -120,22 +142,39 @@ export default function App() {
     }
   };
 
-  // Finalizar o jogo quando as 15 coordenadas estiverem preenchidas
+  // Finalizar o jogo quando as 15 coordenadas estiverem preenchidas e liberar XP no Banco de Dados
   const finishBoardGame = (finalBoard, finalScore) => {
     setIsGameFinished(true);
     const cleanCount = Object.values(finalBoard).filter((v) => v.status === 'clean').length;
     const pegadasCount = ALL_COORDS.length - cleanCount;
+    const xpLiberado = Math.max(60, finalScore);
 
     const newEntry = {
       id: Date.now(),
       name: playerName.trim(),
       turma: playerClass,
       score: finalScore,
+      xpGanho: xpLiberado,
       cleanCount,
       pegadasCount
     };
 
     setRanking((prev) => [...prev, newEntry].sort((a, b) => b.score - a.score));
+    setXpRewardInfo({ xpGanhoNaPartida: xpLiberado, xpTotalAcumulado: xpLiberado });
+
+    registrarXpNoBanco({
+      nome: playerName.trim(),
+      turma: playerClass,
+      jogo: 'jogo6',
+      pontuacao: finalScore,
+      xpGanho: xpLiberado,
+      acertos: cleanCount,
+      detalhes: `Preservado: ${cleanCount}/15 • Pegadas: ${pegadasCount}`
+    }).then((res) => {
+      if (res && res.dados) {
+        setXpRewardInfo(res.dados);
+      }
+    });
 
     if (cleanCount >= 10) {
       confetti({
@@ -148,6 +187,7 @@ export default function App() {
 
   const clearClassRanking = (turmaAlvo) => {
     setRanking((prev) => prev.filter((item) => item.turma !== turmaAlvo));
+    limparRankingTurmaNoBanco('jogo6', turmaAlvo);
   };
 
   const ranking6A = ranking.filter((r) => r.turma === '6º A');
@@ -438,7 +478,9 @@ export default function App() {
                 </h3>
                 <p style={{ fontSize: '0.92rem', fontWeight: 700, marginBottom: '0.85rem' }}>
                   <strong>{playerName}</strong> ({playerClass}) finalizou com <strong>{score} pontos</strong> e deixou{' '}
-                  <strong>{pegadasTilesCount}</strong> pegada(s) no tabuleiro. Pontuação salva no Ranking!
+                  <strong>{pegadasTilesCount}</strong> pegada(s) no tabuleiro.{' '}
+                  <strong>+{xpRewardInfo ? xpRewardInfo.xpGanhoNaPartida : score} XP</strong> liberados no Banco de Dados para a Loja AstroLearn
+                  {xpRewardInfo?.xpTotalAcumulado ? ` (Saldo Total: ${xpRewardInfo.xpTotalAcumulado} XP)` : ''}!
                 </p>
                 <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
                   <button
