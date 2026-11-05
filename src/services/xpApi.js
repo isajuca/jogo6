@@ -11,6 +11,31 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api'
 const SUPABASE_URL = (import.meta.env.VITE_SUPABASE_URL || 'https://pkbuupvufwuneooziapx.supabase.co').trim().replace(/\/$/, '');
 const SUPABASE_ANON_KEY = (import.meta.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_R_CVb8GbL6KUv8BOhNdIHQ_lVileie_').trim();
 
+// Tempo de duração do ranking: 2 horas (em milissegundos)
+export const RANKING_TTL_MS = 2 * 60 * 60 * 1000;
+
+/**
+ * Filtra apenas os registros das últimas 2 horas.
+ */
+export function filtrarRankingExpirado(lista) {
+  if (!Array.isArray(lista)) return [];
+  const agora = Date.now();
+  return lista.filter((item) => {
+    if (!item) return false;
+    let ts = null;
+    if (typeof item.createdAt === 'number') {
+      ts = item.createdAt;
+    } else if (item.jogado_em) {
+      const parsed = Date.parse(item.jogado_em);
+      if (!Number.isNaN(parsed)) ts = parsed;
+    } else if (typeof item.id === 'number' && item.id > 1700000000000) {
+      ts = item.id;
+    }
+    if (!ts) return false;
+    return agora - ts <= RANKING_TTL_MS;
+  });
+}
+
 /**
  * Registra o fim da partida no banco de dados (Supabase ou Backend Local) e libera o XP para o aluno.
  */
@@ -86,13 +111,27 @@ export async function registrarXpNoBanco({
 }
 
 /**
- * Busca o ranking atualizado daquele jogo direto do banco de dados (Supabase ou Backend).
+ * Busca o ranking atualizado daquele jogo direto do banco de dados (apenas das últimas 2 horas).
  */
 export async function buscarRankingDoBanco(jogo) {
+  const cutoffIso = new Date(Date.now() - RANKING_TTL_MS).toISOString();
+
   if (SUPABASE_URL && SUPABASE_ANON_KEY) {
     try {
+      // Remove registros antigos (> 2 horas) do histórico do ranking deste jogo
+      fetch(
+        `${SUPABASE_URL}/rest/v1/historico_partidas?jogo=eq.${encodeURIComponent(jogo)}&jogado_em=lt.${encodeURIComponent(cutoffIso)}`,
+        {
+          method: 'DELETE',
+          headers: {
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+          }
+        }
+      ).catch(() => {});
+
       const response = await fetch(
-        `${SUPABASE_URL}/rest/v1/historico_partidas?jogo=eq.${encodeURIComponent(jogo)}&select=id,nome_jogador,turma,pontuacao_partida,xp_ganho,acertos,detalhes,jogado_em&order=pontuacao_partida.desc,id.asc&limit=50`,
+        `${SUPABASE_URL}/rest/v1/historico_partidas?jogo=eq.${encodeURIComponent(jogo)}&jogado_em=gte.${encodeURIComponent(cutoffIso)}&select=id,nome_jogador,turma,pontuacao_partida,xp_ganho,acertos,detalhes,jogado_em&order=pontuacao_partida.desc,id.asc&limit=50`,
         {
           headers: {
             apikey: SUPABASE_ANON_KEY,
@@ -110,7 +149,8 @@ export async function buscarRankingDoBanco(jogo) {
           xpGanho: r.xp_ganho,
           correct: r.acertos,
           detalhes: r.detalhes,
-          jogado_em: r.jogado_em
+          jogado_em: r.jogado_em,
+          createdAt: r.jogado_em ? new Date(r.jogado_em).getTime() : Date.now()
         }));
       }
     } catch {
@@ -122,41 +162,10 @@ export async function buscarRankingDoBanco(jogo) {
     const response = await fetch(`${API_BASE_URL}/jogos/ranking/${jogo}`);
     const data = await response.json();
     if (data && data.sucesso && Array.isArray(data.ranking)) {
-      return data.ranking;
+      return filtrarRankingExpirado(data.ranking);
     }
   } catch {
     // Silencioso caso o backend não esteja aberto
   }
   return null;
-}
-
-/**
- * Limpa o ranking de uma turma específica no banco de dados.
- */
-export async function limparRankingTurmaNoBanco(jogo, turma) {
-  if (SUPABASE_URL && SUPABASE_ANON_KEY) {
-    try {
-      await fetch(
-        `${SUPABASE_URL}/rest/v1/historico_partidas?jogo=eq.${encodeURIComponent(jogo)}&turma=eq.${encodeURIComponent(turma)}`,
-        {
-          method: 'DELETE',
-          headers: {
-            apikey: SUPABASE_ANON_KEY,
-            Authorization: `Bearer ${SUPABASE_ANON_KEY}`
-          }
-        }
-      );
-      return;
-    } catch {
-      // continua
-    }
-  }
-
-  try {
-    await fetch(`${API_BASE_URL}/jogos/ranking/${encodeURIComponent(jogo)}/${encodeURIComponent(turma)}`, {
-      method: 'DELETE'
-    });
-  } catch {
-    // Silencioso
-  }
 }

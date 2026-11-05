@@ -1,17 +1,3 @@
-:root {
-  --teal-1: #16cdd6;
-  --teal-2: #22c5cf;
-  --teal-3: #4fd6df;
-  --teal-4: #1ec3cf;
-  --teal-5: #98eff7;
-  --pink-a: #ff4797;
-  --pink-b: #ff82bc;
-  --pink-c: #ffc2df;
-  --neon-blue: #00d4ff;
-  --neon-green: #22c55e;
-  --neon-pink: #ff3b8d;
-}
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -20,704 +6,1456 @@
 
 body {
   font-family: 'Nunito', sans-serif;
-  background-color: #0b1528;
-  background-image:
-    linear-gradient(180deg, rgba(8, 17, 36, 0.45) 0%, rgba(12, 24, 48, 0.68) 100%),
-    url('/assets/balcony_side.jpg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  color: #f8fafc;
+  background-color: #070b1e;
+  color: #ffffff;
   min-height: 100vh;
   overflow-x: hidden;
+  user-select: none;
 }
 
 h1, h2, h3, .font-rounded {
   font-family: 'Fredoka', sans-serif;
 }
 
-.board-app {
-  max-width: 1420px;
-  margin: 0 auto;
-  padding: 1rem 1.5rem 2rem;
+/* ==========================================
+   CENÁRIO ESPACIAL + ECO 16:9 (6 TELAS)
+   ========================================== */
+.pegada-stage {
+  position: relative;
+  width: 100vw;
   min-height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  padding: 1.25rem 2.5rem 1.8rem;
+  transition: background-image 0.3s ease-in-out;
 }
 
-/* Barra de Topo Estilo Vidro Neon */
-.board-topbar {
+.pegada-stage.bg-left-character {
+  background-position: left center;
+}
+
+.pegada-stage.bg-right-character {
+  background-position: right center;
+}
+
+.pegada-stage::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(8, 12, 34, 0.08) 0%,
+    rgba(6, 9, 26, 0.36) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ==========================================
+   BARRA DE TOPO
+   ========================================== */
+.pegada-topbar {
+  position: relative;
+  z-index: 15;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(12, 23, 46, 0.78);
-  backdrop-filter: blur(14px);
-  border: 2px solid rgba(0, 212, 255, 0.45);
-  box-shadow: 0 0 22px rgba(0, 212, 255, 0.25);
-  border-radius: 22px;
-  padding: 0.65rem 1.25rem;
-  margin-bottom: 1.2rem;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.brand-area {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.brand-sneaker {
-  width: 52px;
-  height: 42px;
-  object-fit: contain;
-  filter: drop-shadow(0 0 8px rgba(255, 71, 151, 0.65));
-}
-
-.brand-title {
-  font-family: 'Fredoka', sans-serif;
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: #ffffff;
-  text-shadow: 0 2px 8px rgba(0, 212, 255, 0.45);
-}
-
-.brand-subtitle {
-  font-size: 0.8rem;
-  color: #98eff7;
-  font-weight: 700;
-}
-
-.top-stats {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
+  width: 100%;
+  max-width: 1380px;
+  margin: 0 auto;
+  min-height: 52px;
+  gap: 1rem;
   flex-wrap: wrap;
 }
 
-.stat-pill {
-  display: inline-flex;
+.topbar-left,
+.topbar-right {
+  display: flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.42rem 0.95rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1.5px solid rgba(255, 255, 255, 0.3);
-  font-family: 'Fredoka', sans-serif;
-  font-size: 0.92rem;
-  color: #fff;
+  gap: 0.65rem;
 }
 
-.btn-pill-action {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.5rem 1.1rem;
-  border-radius: 999px;
-  border: 2px solid #ff9ed2;
-  background: linear-gradient(135deg, #ff4797, #7c3aed);
-  color: #fff;
-  font-family: 'Fredoka', sans-serif;
-  font-size: 0.92rem;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 0 16px rgba(255, 71, 151, 0.45);
-  transition: transform 0.18s ease, filter 0.18s ease;
-}
-
-.btn-pill-action:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.08);
-}
-
-/* Tela de Início (Quadro de Vidro Neon Ciano sobre a Varanda) */
-.welcome-container {
-  flex: 1;
+.btn-circle-home {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(14, 25, 62, 0.82);
+  backdrop-filter: blur(10px);
+  border: 1.8px solid rgba(103, 232, 249, 0.5);
+  color: #bae6fd;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem 0;
-}
-
-.welcome-card {
-  width: 100%;
-  max-width: 880px;
-  background: rgba(235, 248, 255, 0.88);
-  backdrop-filter: blur(18px);
-  color: #0f172a;
-  border-radius: 32px;
-  border: 4px solid #00d4ff;
+  cursor: pointer;
   box-shadow:
-    0 0 36px rgba(0, 212, 255, 0.65),
-    inset 0 0 24px rgba(0, 212, 255, 0.2);
-  padding: 2.2rem 2.5rem;
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 2rem;
-  align-items: center;
+    0 0 18px rgba(56, 189, 248, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.25);
+  transition: all 0.2s ease;
 }
 
-@media (max-width: 820px) {
-  .welcome-card {
-    grid-template-columns: 1fr;
-    padding: 1.75rem;
-  }
-}
-
-.steam-badge {
-  display: inline-block;
-  padding: 0.32rem 0.95rem;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #16cdd6, #0284c7);
-  color: #fff;
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 600;
-  font-size: 0.85rem;
-  margin-bottom: 0.75rem;
-}
-
-.welcome-title {
-  font-size: 2.2rem;
-  line-height: 1.12;
-  color: #0f172a;
-  margin-bottom: 0.75rem;
-}
-
-.rules-steps {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
-  margin: 1rem 0 1.25rem;
-  font-size: 0.94rem;
-  font-weight: 700;
-  color: #1e293b;
-}
-
-.rules-steps li span {
-  color: #ff4797;
-  font-weight: 900;
-  margin-right: 0.35rem;
-}
-
-.login-box {
-  background: rgba(255, 255, 255, 0.92);
-  border: 3px solid #ff82bc;
-  border-radius: 24px;
-  padding: 1.5rem;
-  text-align: center;
-  box-shadow: 0 0 24px rgba(255, 71, 151, 0.25);
-}
-
-.input-board {
-  width: 100%;
-  padding: 0.78rem 1rem;
-  border-radius: 14px;
-  border: 2px solid #cbd5e1;
-  font-family: 'Nunito', sans-serif;
-  font-weight: 800;
-  font-size: 0.98rem;
-  color: #1e293b;
-  margin-bottom: 0.75rem;
-  outline: none;
-}
-
-.input-board:focus {
-  border-color: #00d4ff;
-  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.25);
-}
-
-.btn-start-board {
-  width: 100%;
-  padding: 0.95rem 1.5rem;
-  border-radius: 999px;
-  border: 3px solid #a5f3fc;
-  background: linear-gradient(180deg, #22d3ee 0%, #0891b2 55%, #0e7490 100%);
+.btn-circle-home:hover {
+  transform: scale(1.06);
+  border-color: #67e8f9;
   color: #ffffff;
+  box-shadow: 0 0 24px rgba(103, 232, 249, 0.55);
+}
+
+.btn-space-pill,
+.btn-space-ranking {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.48rem 1.05rem;
+  border-radius: 999px;
+  background: rgba(18, 27, 68, 0.82);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(125, 211, 252, 0.5);
+  color: #f8fafc;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  transition: all 0.2s ease;
+}
+
+.btn-space-pill:hover,
+.btn-space-ranking:hover {
+  border-color: #67e8f9;
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(103, 232, 249, 0.4);
+}
+
+/* Pílula Central do Tabuleiro ([🌿 TABULEIRO | > 3/15]) */
+.board-header-pill {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(13, 25, 64, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1.8px solid rgba(56, 189, 248, 0.6);
+  border-radius: 999px;
+  padding: 0.38rem 0.55rem 0.38rem 1.15rem;
+  gap: 1rem;
+  box-shadow:
+    0 0 22px rgba(56, 189, 248, 0.32),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+.board-pill-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+}
+
+.board-pill-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.28rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(8, 15, 40, 0.8);
+  border: 1px solid rgba(103, 232, 249, 0.4);
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e0f2fe;
+}
+
+/* Barra de Progresso Luminosa (Tela 4 - Pergunta) */
+.pegada-progress-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 520px;
+}
+
+.pegada-progress-track {
+  flex: 1;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(13, 22, 58, 0.8);
+  border: 1.5px solid rgba(96, 165, 250, 0.45);
+  padding: 2px;
+  overflow: hidden;
+  box-shadow:
+    inset 0 2px 6px rgba(0, 0, 0, 0.55),
+    0 0 16px rgba(56, 189, 248, 0.22);
+}
+
+.pegada-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #6ee7b7 0%, #5eead4 55%, #38bdf8 100%);
+  box-shadow: 0 0 16px rgba(94, 234, 212, 0.85);
+  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pegada-progress-text {
   font-family: 'Fredoka', sans-serif;
   font-size: 1.25rem;
-  font-weight: 700;
-  cursor: pointer;
+  font-weight: 600;
+  color: #f8fafc;
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* ==========================================
+   PALCO PRINCIPAL E POSICIONAMENTO
+   ========================================== */
+.stage-content {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0.35rem 0;
+}
+
+.stage-content.align-right-panel {
+  justify-content: flex-end;
+}
+
+.stage-content.align-howto-layout {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stage-content.align-board-layout {
+  justify-content: flex-end;
+}
+
+.stage-content.align-result-layout {
+  justify-content: flex-end;
+}
+
+.pegada-panel-column {
+  width: 56%;
+  max-width: 620px;
+  min-width: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeFloatIn 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes fadeFloatIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ==========================================
+   LOGO ASTROLEARN NOVA (TELA 1)
+   ========================================== */
+.pegada-brand-logo {
   display: inline-flex;
   align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.35rem;
+}
+
+.pegada-logo-img-wrap {
+  width: 78px;
+  height: 58px;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  box-shadow: 0 0 20px rgba(0, 212, 255, 0.55);
-  transition: transform 0.18s ease;
+  filter:
+    drop-shadow(0 0 12px rgba(139, 92, 246, 0.7))
+    drop-shadow(0 0 3px rgba(255, 255, 255, 0.35));
 }
 
-.btn-start-board:hover {
-  transform: translateY(-2px) scale(1.02);
+.pegada-official-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
-/* Área de Jogo: Tabuleiro 3D à Esquerda + Moldura de Vidro Neon à Direita */
-.game-workspace {
+.pegada-logo-text {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 2.15rem;
+  font-weight: 500;
+  color: #bae6fd;
+  letter-spacing: 0.01em;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+}
+
+.pegada-logo-text strong {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* ==========================================
+   TELA 1: EMBLEMA 3D "SEM DEIXAR PEGADAS" + PÍLULA TRANSLÚCIDA
+   ========================================== */
+.hero-emblem-wrap {
+  width: 100%;
+  max-width: 450px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.55rem;
+}
+
+.hero-emblem-img {
+  width: 100%;
+  max-height: 205px;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.65));
+}
+
+.home-glass-pill-box {
+  width: 100%;
+  max-width: 500px;
+  background: linear-gradient(
+    165deg,
+    rgba(16, 36, 78, 0.84) 0%,
+    rgba(11, 24, 58, 0.9) 100%
+  );
+  backdrop-filter: blur(14px);
+  border-radius: 26px;
+  border: 2px solid rgba(56, 189, 248, 0.65);
+  box-shadow:
+    0 16px 40px rgba(3, 6, 20, 0.65),
+    0 0 24px rgba(56, 189, 248, 0.28),
+    inset 0 1px 2px rgba(255, 255, 255, 0.25);
+  padding: 1.15rem 1.45rem;
+  text-align: center;
+  margin-bottom: 1.1rem;
+}
+
+.home-tagline {
+  font-size: 1.04rem;
+  line-height: 1.4;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin-bottom: 0.85rem;
+}
+
+.home-login-inputs {
   display: grid;
-  grid-template-columns: 1.32fr 0.98fr;
-  gap: 1.5rem;
-  align-items: start;
-  flex: 1;
+  grid-template-columns: 1.15fr 0.95fr;
+  gap: 0.6rem;
 }
 
-@media (max-width: 1080px) {
-  .game-workspace {
+@media (max-width: 560px) {
+  .home-login-inputs {
     grid-template-columns: 1fr;
   }
 }
 
-/* Moldura do Tabuleiro 3D */
-.board-frame {
-  background: rgba(11, 22, 44, 0.82);
-  backdrop-filter: blur(14px);
-  border: 3px solid rgba(0, 212, 255, 0.5);
-  box-shadow: 0 0 30px rgba(0, 212, 255, 0.28);
-  border-radius: 28px;
-  padding: 1.15rem;
-}
-
-.board-grid-wrapper {
-  display: grid;
-  grid-template-columns: 64px repeat(5, 1fr);
-  grid-template-rows: 54px repeat(3, 1fr);
-  gap: 6px;
-  aspect-ratio: 16 / 10.6;
+.pegada-input-field {
   width: 100%;
-}
-
-.axis-corner {
-  background: rgba(255, 255, 255, 0.08);
+  padding: 0.68rem 0.95rem;
   border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid rgba(255, 255, 255, 0.28);
+  border: 1.5px solid rgba(125, 211, 252, 0.42);
+  background: rgba(8, 15, 40, 0.78);
+  color: #ffffff;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  outline: none;
+  transition: all 0.2s ease;
 }
 
-/* Faixa Horizontal 1 a 5 (Cores Ciano da Imagem) */
-.axis-col-header {
+.pegada-input-field::placeholder {
+  color: #94a3b8;
+}
+
+.pegada-input-field option {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+.pegada-input-field:focus {
+  border-color: #67e8f9;
+  box-shadow: 0 0 14px rgba(103, 232, 249, 0.35);
+}
+
+.pegada-error-msg {
+  margin-top: 0.65rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 12px;
+  background: rgba(244, 63, 94, 0.22);
+  border: 1px solid rgba(251, 113, 133, 0.55);
+  color: #fecdd3;
+  font-size: 0.84rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* ==========================================
+   BOTÃO GRADIENTE ROXO -> CIANO ("COMEÇAR >", "ENTENDI! >", "PRÓXIMA PERGUNTA >")
+   ========================================== */
+.btn-pegada-gradient {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.9rem 2.5rem;
+  border-radius: 999px;
+  border: 2px solid rgba(186, 230, 253, 0.75);
+  background: linear-gradient(90deg, #c084fc 0%, #818cf8 48%, #38bdf8 100%);
+  color: #ffffff;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  box-shadow:
+    0 10px 28px rgba(56, 189, 248, 0.42),
+    0 0 22px rgba(168, 85, 247, 0.42),
+    inset 0 2px 3px rgba(255, 255, 255, 0.45);
+  transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.btn-pegada-gradient:hover {
+  transform: translateY(-2px) scale(1.02);
+  filter: brightness(1.06);
+  box-shadow:
+    0 14px 34px rgba(56, 189, 248, 0.58),
+    0 0 28px rgba(192, 132, 252, 0.55),
+    inset 0 2px 4px rgba(255, 255, 255, 0.6);
+}
+
+.btn-start-large {
+  min-width: 265px;
+}
+
+.btn-chevron-icon {
+  margin-right: -0.35rem;
+}
+
+/* ==========================================
+   CARD GLASSMORPHIC ESPACIAL PADRÃO
+   ========================================== */
+.pegada-glass-card {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(
+    165deg,
+    rgba(20, 33, 82, 0.84) 0%,
+    rgba(12, 20, 56, 0.9) 60%,
+    rgba(17, 17, 56, 0.92) 100%
+  );
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 28px;
+  border: 1.8px solid rgba(103, 232, 249, 0.48);
+  box-shadow:
+    0 24px 60px rgba(3, 6, 20, 0.72),
+    0 0 28px rgba(56, 189, 248, 0.22),
+    inset 0 1px 2px rgba(255, 255, 255, 0.25);
+  padding: 2rem 2.15rem;
+  text-align: center;
+}
+
+/* ==========================================
+   TELA 2: COMO FUNCIONA? (4 PASSOS + DICA FLUTUANTE)
+   ========================================== */
+.howto-stage-grid {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-left: 4%;
+}
+
+.howto-glass-card {
+  max-width: 500px;
+  padding: 2rem 2.1rem 1.85rem;
+}
+
+.howto-title {
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(1.85rem, 3vw, 2.35rem);
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1.35rem;
+  letter-spacing: 0.02em;
+}
+
+.howto-title .pink-word {
+  background: linear-gradient(90deg, #e879f9 0%, #a855f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.howto-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.95rem;
+  margin-bottom: 1.55rem;
+  text-align: left;
+}
+
+.howto-step-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.howto-icon-box {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+}
+
+.howto-icon-box.blue-box {
+  background: linear-gradient(145deg, rgba(30, 58, 138, 0.78), rgba(15, 23, 42, 0.88));
+  border-color: rgba(56, 189, 248, 0.55);
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.25);
+}
+
+.howto-icon-box.gold-box {
+  background: linear-gradient(145deg, rgba(67, 56, 202, 0.65), rgba(30, 27, 75, 0.88));
+  border-color: rgba(250, 204, 21, 0.55);
+  box-shadow: 0 0 14px rgba(250, 204, 21, 0.22);
+}
+
+.howto-icon-box.pink-box {
+  background: linear-gradient(145deg, rgba(131, 24, 67, 0.68), rgba(49, 10, 31, 0.88));
+  border-color: rgba(244, 114, 182, 0.55);
+  box-shadow: 0 0 14px rgba(244, 114, 182, 0.25);
+}
+
+.howto-icon-box.trophy-box {
+  background: linear-gradient(145deg, rgba(120, 53, 15, 0.68), rgba(30, 27, 75, 0.88));
+  border-color: rgba(250, 204, 21, 0.55);
+  box-shadow: 0 0 14px rgba(250, 204, 21, 0.25);
+}
+
+.howto-step-num {
   font-family: 'Fredoka', sans-serif;
   font-size: 1.65rem;
   font-weight: 700;
-  color: #0b1938;
-  border-radius: 12px;
-  border: 2px solid #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  color: #ffffff;
+  width: 22px;
+  text-align: center;
+  flex-shrink: 0;
 }
 
-.col-1 { background: var(--teal-1); }
-.col-2 { background: var(--teal-2); }
-.col-3 { background: var(--teal-3); }
-.col-4 { background: var(--teal-4); }
-.col-5 { background: var(--teal-5); }
+.howto-step-item p {
+  font-size: 0.98rem;
+  line-height: 1.35;
+  font-weight: 700;
+  color: #e2e8f0;
+}
 
-/* Faixa Vertical A a C (Cores Rosa da Imagem) */
-.axis-row-header {
+.btn-howto-understand {
+  width: 100%;
+  max-width: 280px;
+}
+
+/* Card Flutuante Superior Direito ("Pequenas ações hoje fazem um grande amanhã!") */
+.howto-floating-tip {
+  width: 215px;
+  background: linear-gradient(
+    165deg,
+    rgba(18, 35, 82, 0.82) 0%,
+    rgba(11, 22, 54, 0.88) 100%
+  );
+  backdrop-filter: blur(14px);
+  border-radius: 22px;
+  border: 1.6px solid rgba(103, 232, 249, 0.45);
+  box-shadow:
+    0 16px 36px rgba(0, 0, 0, 0.55),
+    0 0 20px rgba(56, 189, 248, 0.22);
+  padding: 1.2rem 1.1rem;
+  text-align: center;
+  margin-top: 0.4rem;
+}
+
+.tip-leaf-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.45rem;
+  filter: drop-shadow(0 0 8px rgba(74, 222, 128, 0.6));
+}
+
+.howto-floating-tip p {
+  font-size: 0.98rem;
+  line-height: 1.38;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+@media (max-width: 900px) {
+  .howto-stage-grid {
+    flex-direction: column;
+    align-items: center;
+    padding-left: 0;
+  }
+  .howto-floating-tip {
+    display: none;
+  }
+}
+
+/* ==========================================
+   TELA 3: TABULEIRO 5x3 (1 a 5 • A a C)
+   ========================================== */
+.board-stage-wrap {
+  width: 68%;
+  max-width: 820px;
+  display: flex;
+  justify-content: center;
+  animation: fadeFloatIn 0.32s ease;
+}
+
+@media (max-width: 980px) {
+  .board-stage-wrap {
+    width: 100%;
+  }
+}
+
+.board-glass-container {
+  width: 100%;
+  background: linear-gradient(
+    165deg,
+    rgba(13, 27, 66, 0.86) 0%,
+    rgba(9, 18, 48, 0.92) 100%
+  );
+  backdrop-filter: blur(16px);
+  border-radius: 28px;
+  border: 2px solid rgba(56, 189, 248, 0.6);
+  box-shadow:
+    0 24px 60px rgba(3, 6, 20, 0.78),
+    0 0 30px rgba(56, 189, 248, 0.28),
+    inset 0 1px 2px rgba(255, 255, 255, 0.25);
+  padding: 1.15rem 1.35rem 1.1rem;
+}
+
+.board-matrix {
+  display: grid;
+  grid-template-columns: 44px repeat(5, 1fr);
+  grid-template-rows: 36px repeat(3, 1fr);
+  gap: 7px;
+  aspect-ratio: 16 / 9.6;
+  width: 100%;
+}
+
+.board-corner-empty {
+  border-radius: 10px;
+}
+
+.board-col-label {
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Fredoka', sans-serif;
-  font-size: 1.75rem;
+  font-size: 1.35rem;
   font-weight: 700;
-  color: #1a0b2e;
-  border-radius: 12px;
-  border: 2px solid #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  color: #e0f2fe;
+  background: rgba(30, 58, 138, 0.45);
+  border-radius: 10px;
+  border: 1px solid rgba(125, 211, 252, 0.35);
 }
 
-.row-A { background: var(--pink-a); }
-.row-B { background: var(--pink-b); }
-.row-C { background: var(--pink-c); }
-
-/* Células das 15 Coordenadas (A1 a C5) */
-.coord-cell {
-  position: relative;
-  border-radius: 14px;
-  overflow: hidden;
-  cursor: pointer;
-  background: rgba(19, 34, 66, 0.85);
-  border: 2.5px dashed rgba(0, 212, 255, 0.5);
+.board-row-label {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: all 0.22s ease;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #e0f2fe;
+  background: rgba(30, 58, 138, 0.45);
+  border-radius: 10px;
+  border: 1px solid rgba(125, 211, 252, 0.35);
 }
 
-.coord-cell:hover:not(.revealed) {
-  background: rgba(0, 212, 255, 0.22);
-  border-color: #00d4ff;
+.board-tile-cell {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  background: rgba(15, 23, 52, 0.88);
+  border: 1.8px solid rgba(103, 232, 249, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.board-tile-cell.is-mystery:hover {
+  border-color: #67e8f9;
+  background: rgba(30, 58, 138, 0.65);
+  box-shadow: 0 0 18px rgba(103, 232, 249, 0.45);
   transform: scale(1.03);
 }
 
-.coord-cell.selected {
-  border: 3px solid #facc15;
-  box-shadow: 0 0 18px rgba(250, 204, 21, 0.7);
-  background: rgba(250, 204, 21, 0.16);
+.board-tile-cell.is-selected {
+  border: 2.5px solid #67e8f9;
+  box-shadow: 0 0 20px rgba(103, 232, 249, 0.75);
 }
 
-.coord-cell.revealed {
-  border-style: solid;
-  border-width: 2.5px;
+.board-tile-cell.is-clean {
+  border-color: rgba(134, 239, 172, 0.8);
 }
 
-.coord-cell.revealed.clean {
-  border-color: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+.board-tile-cell.is-pegada {
+  border-color: rgba(251, 113, 133, 0.75);
+  background: radial-gradient(circle, rgba(68, 64, 78, 0.92) 0%, rgba(28, 25, 36, 0.96) 100%);
 }
 
-.coord-cell.revealed.pegada {
-  border-color: #ff4797;
-  box-shadow: 0 0 16px rgba(255, 71, 151, 0.65);
-}
-
-/* Círculo rosa da coordenada (A1..C5) */
-.coord-badge {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #ff4797, #d91b73);
-  color: #ffffff;
+.board-question-mark {
   font-family: 'Fredoka', sans-serif;
+  font-size: 2.2rem;
   font-weight: 700;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-  border: 2px solid #ffffff;
+  color: rgba(186, 230, 253, 0.72);
+  text-shadow: 0 0 14px rgba(56, 189, 248, 0.45);
+}
+
+.board-coord-mini {
+  position: absolute;
+  top: 5px;
+  left: 6px;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(224, 242, 254, 0.85);
+  background: rgba(9, 14, 38, 0.65);
+  padding: 1px 6px;
+  border-radius: 6px;
   z-index: 3;
 }
 
-.coord-cell.revealed .coord-badge {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  width: 28px;
-  height: 28px;
-  font-size: 0.76rem;
-}
-
-/* Imagem da peça 3D ou da Pegada Neon */
-.tile-image {
+.board-tile-img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  animation: fadeInTile 0.35s ease;
+  animation: tileReveal 0.35s ease;
 }
 
-@keyframes fadeInTile {
+.board-pegada-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+}
+
+.board-pegada-img {
+  width: 72%;
+  height: 84%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.75));
+}
+
+.board-sneaker-pawn {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  z-index: 4;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.75));
+  animation: pawnFloat 1.4s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes pawnFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes tileReveal {
   from { opacity: 0; transform: scale(0.92); }
   to { opacity: 1; transform: scale(1); }
 }
 
-/* Tênis 3D sobre a coordenada selecionada */
-.pawn-sneaker-overlay {
-  position: absolute;
-  z-index: 5;
-  width: 76%;
-  max-width: 105px;
-  object-fit: contain;
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.7));
-  animation: bouncePawn 1.2s infinite ease-in-out;
-  pointer-events: none;
-}
-
-@keyframes bouncePawn {
-  0%, 100% { transform: translateY(0) rotate(-3deg); }
-  50% { transform: translateY(-7px) rotate(3deg); }
-}
-
-.pegada-warning-tag {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  background: rgba(255, 59, 141, 0.92);
-  color: #fff;
-  font-size: 0.68rem;
-  font-weight: 900;
-  padding: 2px 7px;
-  border-radius: 999px;
-  z-index: 4;
-  border: 1px solid #fff;
-  box-shadow: 0 0 8px rgba(255, 59, 141, 0.8);
-}
-
-/* Painel Direito com a Varanda + Molduras de Vidro Neon (Azul, Verde e Rosa da Imagem!) */
-.card-panel {
-  position: relative;
-  background-image:
-    linear-gradient(180deg, rgba(10, 22, 46, 0.35) 0%, rgba(10, 22, 46, 0.65) 100%),
-    url('/assets/balcony_side.jpg');
-  background-size: cover;
-  background-position: center bottom;
-  border: 3px solid rgba(255, 255, 255, 0.35);
-  border-radius: 28px;
-  padding: 1.25rem;
-  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.55);
-}
-
-/* As 3 Molduras de Vidro Neon da Imagem:
-   1. Azul Ciano (Pergunta)
-   2. Verde Neon (Resposta Correta)
-   3. Rosa/Coral Neon (Resposta Incorreta) */
-.steam-question-card {
-  background: rgba(235, 248, 255, 0.86);
-  backdrop-filter: blur(16px);
-  color: #0f172a;
-  border-radius: 26px;
-  padding: 1.5rem;
-  border: 4px solid var(--neon-blue);
-  box-shadow:
-    0 0 30px rgba(0, 212, 255, 0.7),
-    inset 0 0 24px rgba(0, 212, 255, 0.22);
-  transition: all 0.3s ease;
-}
-
-.steam-question-card.frame-correct {
-  background: rgba(232, 253, 242, 0.9);
-  border-color: #4ade80;
-  box-shadow:
-    0 0 32px rgba(74, 222, 128, 0.8),
-    inset 0 0 24px rgba(74, 222, 128, 0.25);
-}
-
-.steam-question-card.frame-wrong {
-  background: rgba(255, 235, 242, 0.9);
-  border-color: #ff4797;
-  box-shadow:
-    0 0 32px rgba(255, 71, 151, 0.8),
-    inset 0 0 24px rgba(255, 71, 151, 0.25);
-}
-
-.steam-card-header {
+.board-footer-hint {
+  margin-top: 0.85rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid rgba(15, 23, 42, 0.1);
-}
-
-.steam-logo-pill {
-  font-family: 'Fredoka', sans-serif;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
   font-weight: 700;
-  font-size: 1.35rem;
-  color: #0f172a;
+  color: #bae6fd;
 }
 
-.coord-circle-teal {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #16cdd6, #0284c7);
+.btn-open-coord-question {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 1.1rem;
+  border-radius: 999px;
+  border: 1.5px solid #67e8f9;
+  background: linear-gradient(90deg, #818cf8, #38bdf8);
   color: #ffffff;
   font-family: 'Fredoka', sans-serif;
-  font-size: 1.35rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.45);
+}
+
+/* ==========================================
+   TELA 4: PERGUNTA DA COORDENADA (3 CARDS A, B, C LADO A LADO)
+   ========================================== */
+.question-column {
+  width: 62%;
+  max-width: 680px;
+}
+
+.question-glass-card {
+  padding: 2.35rem 1.85rem 1.95rem;
+  margin-top: 1rem;
+}
+
+.question-top-badge {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 56px;
+  padding: 0 1.1rem;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 30%, #1e3a8a, #0f172a);
+  border: 2px solid #38bdf8;
+  box-shadow: 0 0 22px rgba(56, 189, 248, 0.55);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.question-coord-tag {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.15rem;
   font-weight: 700;
+  color: #e0f2fe;
+}
+
+.pegada-question-text {
+  font-size: clamp(1.15rem, 2vw, 1.38rem);
+  line-height: 1.42;
+  font-weight: 700;
+  color: #f8fafc;
+  margin: 0.65rem auto 1.55rem;
+  max-width: 560px;
+}
+
+/* 3 Cards de Alternativas Lado a Lado (A, B, C) idênticos ao Painel 4 da referência */
+.abc-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.9rem;
+}
+
+@media (max-width: 680px) {
+  .abc-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.abc-choice-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  padding: 1.15rem 0.9rem 1.25rem;
+  border-radius: 20px;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: 'Nunito', sans-serif;
+  transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  min-height: 155px;
+}
+
+.abc-choice-card.choice-a {
+  background: linear-gradient(165deg, rgba(109, 40, 217, 0.62) 0%, rgba(59, 7, 100, 0.78) 100%);
+  border: 2px solid rgba(192, 132, 252, 0.75);
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+}
+
+.abc-choice-card.choice-b {
+  background: linear-gradient(165deg, rgba(14, 116, 144, 0.65) 0%, rgba(8, 51, 68, 0.82) 100%);
+  border: 2px solid rgba(103, 232, 249, 0.8);
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.32);
+}
+
+.abc-choice-card.choice-c {
+  background: linear-gradient(165deg, rgba(126, 34, 206, 0.62) 0%, rgba(76, 29, 149, 0.78) 100%);
+  border: 2px solid rgba(232, 121, 249, 0.75);
+  box-shadow: 0 0 20px rgba(217, 70, 239, 0.3);
+}
+
+.abc-choice-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  filter: brightness(1.1);
+}
+
+.abc-letter {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.abc-text {
+  font-size: 0.94rem;
+  line-height: 1.38;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+/* ==========================================
+   TELA 5: FEEDBACK ("ACERTOU!" ou "OPS!")
+   ========================================== */
+.feedback-glass-card {
+  max-width: 470px;
+  padding: 2.4rem 1.85rem 1.75rem;
+  margin-top: 1.2rem;
+}
+
+.feedback-glass-card.card-correct {
+  border-color: rgba(74, 222, 128, 0.75);
+  background: linear-gradient(
+    165deg,
+    rgba(16, 56, 68, 0.88) 0%,
+    rgba(11, 34, 52, 0.92) 100%
+  );
+  box-shadow:
+    0 24px 60px rgba(3, 6, 20, 0.75),
+    0 0 32px rgba(74, 222, 128, 0.32);
+}
+
+.feedback-glass-card.card-wrong {
+  border-color: rgba(251, 113, 133, 0.75);
+  background: linear-gradient(
+    165deg,
+    rgba(68, 19, 48, 0.88) 0%,
+    rgba(38, 12, 36, 0.92) 100%
+  );
+  box-shadow:
+    0 24px 60px rgba(3, 6, 20, 0.75),
+    0 0 32px rgba(244, 63, 94, 0.32);
+}
+
+.feedback-top-orb {
+  position: absolute;
+  top: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2.5px solid #ffffff;
-  box-shadow: 0 4px 14px rgba(0, 212, 255, 0.5);
+  color: #ffffff;
 }
 
-.question-title-text {
-  font-size: 1.06rem;
-  line-height: 1.48;
-  font-weight: 800;
-  color: #0f172a;
-  margin-bottom: 1.1rem;
+.feedback-top-orb.orb-correct {
+  background: radial-gradient(circle at 30% 30%, #4ade80, #16a34a);
+  border: 2.5px solid #bbf7d0;
+  box-shadow: 0 0 24px rgba(74, 222, 128, 0.85);
 }
 
-.options-list {
+.feedback-top-orb.orb-wrong {
+  background: radial-gradient(circle at 30% 30%, #fb7185, #e11d48);
+  border: 2.5px solid #fecdd3;
+  box-shadow: 0 0 24px rgba(244, 63, 94, 0.85);
+}
+
+.pegada-feedback-heading {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 2.15rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+.heading-correct {
+  color: #86efac;
+  text-shadow: 0 0 16px rgba(74, 222, 128, 0.45);
+}
+
+.heading-wrong {
+  color: #fda4af;
+  text-shadow: 0 0 16px rgba(244, 63, 94, 0.45);
+}
+
+.pegada-feedback-sub {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin-bottom: 0.85rem;
+}
+
+.feedback-tile-preview {
+  width: 220px;
+  height: 144px;
+  margin: 0 auto 0.9rem;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+.feedback-tile-preview.preview-clean {
+  border: 2.5px solid #4ade80;
+  box-shadow: 0 0 22px rgba(74, 222, 128, 0.55);
+}
+
+.feedback-tile-preview.preview-pegada {
+  border: 2.5px solid #fb7185;
+  box-shadow: 0 0 22px rgba(251, 113, 133, 0.55);
+  background: radial-gradient(circle, #524c5a 0%, #27242d 100%);
+}
+
+.feedback-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.feedback-pegada-box {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.feedback-pegada-img {
+  width: 80%;
+  height: 88%;
+  object-fit: contain;
+}
+
+.pegada-explanation-box {
+  background: rgba(9, 14, 36, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  padding: 0.7rem 0.95rem;
+  font-size: 0.88rem;
+  line-height: 1.42;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin-bottom: 1rem;
+}
+
+.btn-next-question {
+  width: 100%;
+  padding: 0.82rem 1.6rem;
+  font-size: 1.12rem;
+}
+
+/* ==========================================
+   TELA 6: JOGO CONCLUÍDO! + RANKING AO LADO
+   ========================================== */
+.result-stage-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 0.85fr;
+  gap: 1.15rem;
+  width: 66%;
+  max-width: 790px;
+  align-items: stretch;
+  animation: fadeFloatIn 0.34s ease;
+}
+
+@media (max-width: 980px) {
+  .result-stage-grid {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+}
+
+.result-glass-card {
+  padding: 1.75rem 1.6rem;
   display: flex;
   flex-direction: column;
-  gap: 0.68rem;
+  align-items: center;
+  justify-content: center;
 }
 
-.option-btn {
-  width: 100%;
-  text-align: left;
-  padding: 0.85rem 1rem;
-  border-radius: 16px;
-  border: 2px solid rgba(15, 23, 42, 0.15);
-  background: rgba(255, 255, 255, 0.88);
-  color: #0f172a;
-  font-family: 'Nunito', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 800;
-  line-height: 1.4;
-  cursor: pointer;
-  display: flex;
-  align-items: flex-start;
+.result-title-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.result-heading {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.75rem;
+  color: #67e8f9;
+  letter-spacing: 0.03em;
+}
+
+.result-sub-label {
+  font-size: 0.98rem;
+  color: #cbd5e1;
+  font-weight: 700;
+  margin-bottom: 0.45rem;
+}
+
+.result-score-hero {
+  display: inline-flex;
+  align-items: center;
   gap: 0.65rem;
-  transition: all 0.18s ease;
+  margin-bottom: 0.65rem;
 }
 
-.option-btn:hover:not(:disabled) {
-  border-color: #00d4ff;
-  background: #ffffff;
-  box-shadow: 0 0 14px rgba(0, 212, 255, 0.4);
-  transform: translateX(3px);
+.result-big-fraction {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 2.85rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
 }
 
-.option-letter {
-  flex-shrink: 0;
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #ff4797, #7c3aed);
+.result-encouragement {
+  font-size: 0.95rem;
+  line-height: 1.42;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin-bottom: 0.8rem;
+}
+
+.result-xp-badge {
+  background: rgba(14, 116, 144, 0.35);
+  border: 1px solid rgba(103, 232, 249, 0.45);
+  border-radius: 999px;
+  padding: 0.38rem 0.95rem;
+  font-size: 0.82rem;
+  color: #bae6fd;
+  margin-bottom: 1rem;
+}
+
+.result-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.btn-result-again {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.15rem;
+  border-radius: 999px;
+  border: 1.5px solid #c084fc;
+  background: linear-gradient(90deg, #9333ea, #6366f1);
   color: #ffffff;
   font-family: 'Fredoka', sans-serif;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-result-board,
+.btn-result-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.65rem 1rem;
+  border-radius: 999px;
+  border: 1.5px solid rgba(125, 211, 252, 0.5);
+  background: rgba(15, 23, 58, 0.8);
+  color: #e0f2fe;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Card Lateral Direito: RANKING (Tela 6) */
+.result-ranking-sidecard {
+  padding: 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidecard-rank-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+}
+
+.sidecard-rank-header h3 {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.35rem;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+}
+
+.sidecard-rank-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  flex: 1;
+}
+
+.sidecard-rank-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(15, 23, 58, 0.72);
+  border: 1px solid rgba(125, 211, 252, 0.28);
+  border-radius: 12px;
+  padding: 0.5rem 0.75rem;
+  gap: 0.55rem;
+}
+
+.medal-badge {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-family: 'Fredoka', sans-serif;
   font-weight: 700;
+  font-size: 0.84rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.medal-1 {
+  background: linear-gradient(135deg, #fde047, #ca8a04);
+  color: #0f172a;
+}
+
+.medal-2 {
+  background: linear-gradient(135deg, #e2e8f0, #94a3b8);
+  color: #0f172a;
+}
+
+.medal-3 {
+  background: linear-gradient(135deg, #fdba74, #c2410c);
+  color: #ffffff;
+}
+
+.medal-4 {
+  background: rgba(56, 189, 248, 0.25);
+  color: #bae6fd;
+}
+
+.sidecard-rank-info {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+}
+
+.sidecard-rank-name {
+  display: block;
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: #f8fafc;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidecard-rank-turma {
+  display: block;
+  font-size: 0.72rem;
+  color: #93c5fd;
+  font-weight: 700;
+}
+
+.sidecard-rank-score {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #67e8f9;
+}
+
+.btn-open-full-ranking {
+  margin-top: 0.85rem;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  border: 1px solid rgba(103, 232, 249, 0.45);
+  background: rgba(30, 58, 138, 0.45);
+  color: #bae6fd;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 0.82rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+/* ==========================================
+   MODAL DE RANKING COMPLETO (6º A e 6º B)
+   ========================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 8, 24, 0.82);
+  backdrop-filter: blur(10px);
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+}
+
+.pegada-modal-card {
+  width: 100%;
+  max-width: 860px;
+  max-height: 86vh;
+  overflow-y: auto;
+  background: linear-gradient(165deg, rgba(16, 26, 68, 0.96), rgba(10, 16, 44, 0.98));
+  border: 2px solid rgba(103, 232, 249, 0.55);
+  border-radius: 28px;
+  padding: 1.75rem;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
+}
+
+.pegada-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.pegada-modal-header h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 1.45rem;
+  color: #ffffff;
+}
+
+.rankings-two-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.15rem;
+}
+
+@media (max-width: 720px) {
+  .rankings-two-cols {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ranking-column-box {
+  background: rgba(9, 15, 40, 0.75);
+  border: 1.5px solid rgba(96, 165, 250, 0.35);
+  border-radius: 20px;
+  padding: 1.1rem;
+}
+
+.ranking-col-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+}
+
+.ranking-col-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 1.15rem;
+  color: #e0f2fe;
+}
+
+.empty-ranking-msg {
+  text-align: center;
+  padding: 1.4rem 0.5rem;
+  color: #94a3b8;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.ranking-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0.85rem;
+  border-radius: 14px;
+  background: rgba(19, 30, 72, 0.65);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  margin-bottom: 0.5rem;
+}
+
+.ranking-row.first {
+  border-color: rgba(250, 204, 21, 0.65);
+  background: linear-gradient(90deg, rgba(250, 204, 21, 0.16), rgba(19, 30, 72, 0.75));
+}
+
+.rank-position-badge {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(56, 189, 248, 0.2);
+  color: #bae6fd;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
-.option-btn.correct-choice {
-  border-color: #16a34a;
-  background: #dcfce7;
-  color: #14532d;
-}
-
-.option-btn.correct-choice .option-letter {
-  background: #16a34a;
-}
-
-.option-btn.wrong-choice {
-  border-color: #e11d48;
-  background: #ffe4e6;
-  color: #881337;
-}
-
-.option-btn.wrong-choice .option-letter {
-  background: #e11d48;
-}
-
-.official-explanation-box {
-  margin-top: 1.1rem;
-  padding: 1rem 1.15rem;
-  border-radius: 16px;
-  font-size: 0.92rem;
-  line-height: 1.5;
-  font-weight: 800;
-}
-
-.official-explanation-box.ok {
-  background: rgba(220, 252, 231, 0.92);
-  border: 2px solid #4ade80;
-  color: #14532d;
-}
-
-.official-explanation-box.err {
-  background: rgba(255, 228, 230, 0.92);
-  border: 2px solid #fb7185;
-  color: #881337;
-}
-
-/* Seletor Rápido de Coordenada */
-.coord-picker-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.45rem;
-  margin-bottom: 0.9rem;
-  flex-wrap: wrap;
-}
-
-.coord-mini-btn {
-  padding: 0.35rem 0.62rem;
-  border-radius: 10px;
-  border: 1.5px solid rgba(255, 255, 255, 0.5);
-  background: rgba(11, 22, 44, 0.72);
-  color: #fff;
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 600;
-  font-size: 0.84rem;
-  cursor: pointer;
-}
-
-.coord-mini-btn.active {
+.rank-position-badge.pos-1 {
   background: #facc15;
   color: #0f172a;
-  border-color: #fff;
-  box-shadow: 0 0 10px rgba(250, 204, 21, 0.8);
 }
 
-.coord-mini-btn.done-ok {
-  background: #22c55e;
-  border-color: #bbf7d0;
+.rank-student-name {
+  font-weight: 800;
+  font-size: 0.94rem;
+  color: #ffffff;
 }
 
-.coord-mini-btn.done-err {
-  background: #ff4797;
-  border-color: #fbcfe8;
+.rank-student-meta {
+  font-size: 0.76rem;
+  color: #94a3b8;
+  font-weight: 700;
 }
 
-/* Modal de Rankings Separados (6º A e 6º B) */
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(8, 15, 32, 0.8);
-  backdrop-filter: blur(8px);
-  z-index: 60;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.25rem;
-}
-
-.modal-card {
-  width: 100%;
-  max-width: 880px;
-  max-height: 88vh;
-  overflow-y: auto;
-  background: rgba(240, 249, 255, 0.95);
-  color: #0f172a;
-  border-radius: 28px;
-  padding: 1.85rem;
-  border: 4px solid #00d4ff;
-  box-shadow: 0 0 40px rgba(0, 212, 255, 0.6);
-}
-
-.rankings-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
-  margin-top: 1rem;
-}
-
-@media (max-width: 720px) {
-  .rankings-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.ranking-col {
-  background: #ffffff;
-  border: 2px solid #bae6fd;
-  border-radius: 20px;
-  padding: 1.1rem;
-}
-
-.ranking-item-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.7rem 0.9rem;
-  border-radius: 12px;
-  background: #f8fafc;
-  border: 1.5px solid #e2e8f0;
-  margin-bottom: 0.5rem;
-}
-
-.ranking-item-row.top1 {
-  background: linear-gradient(90deg, #fef9c3, #ffffff);
-  border-color: #eab308;
+.rank-student-pts {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #67e8f9;
 }
